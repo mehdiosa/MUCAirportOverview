@@ -5,8 +5,9 @@
 //  Created by Osama Mehdi on 25.07.23.
 //
 
-import SwiftUI
 import CoreData
+import SwiftSoup
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -19,14 +20,11 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
-                    }
+                NavigationLink {
+                    Text("No items from example used.")
+                } label: {
+                    Text("Item 1")
                 }
-                .onDelete(perform: deleteItems)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
