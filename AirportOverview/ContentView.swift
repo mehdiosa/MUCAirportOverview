@@ -10,74 +10,37 @@ import SwiftSoup
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
+    @ObservedObject var airportDataModel: AirportData = .init()
+    @State var airportData: [[String: String]] = [[:]]
 
     var body: some View {
-        NavigationView {
-            List {
-                NavigationLink {
-                    Text("No items from example used.")
-                } label: {
-                    Text("Item 1")
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+        ZStack {
+            if airportDataModel.isFetching {
+                ProgressView("Loading Airport Data")
+            } else {
+                List {
+                    ForEach(airportData, id: \.self) { flightData in
+                        if flightData.isEmpty {
+                            FlightView(airline: "", departureCity: "", flightNumber: "", status: "", plannedArrivalTime: "", expectedArrivalTime: "", terminal: "")
+                            
+                        } else {
+                            FlightView(airline: flightData["airline"]!,
+                                       departureCity: flightData["departureCity"]!,
+                                       flightNumber: flightData["number"]!,
+                                       status: flightData["status"]!,
+                                       plannedArrivalTime: flightData["plannedArrivalTime"]!,
+                                       expectedArrivalTime: flightData["expectedArrivalTime"]!,
+                                       terminal: flightData["area"]!)
+                        }
                     }
                 }
             }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+        }.task {
+            airportData = await airportDataModel.parseData()
+            airportDataModel.isFetching = false
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

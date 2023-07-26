@@ -8,27 +8,21 @@
 import SwiftSoup
 import SwiftUI
 
-struct AirportData: View {
-    let airportData: [[String: String]] = AirportData.parseData()
+class AirportData: ObservableObject {
+    @Published var isFetching: Bool = true
 
-    var body: some View {
-        List {
-            ForEach(airportData, id: \.self) { flightData in
-                Text(flightData["airline"]!)
-                Text(flightData["number"]!)
-                Text(flightData["status"]!)
-                Text(flightData["time_other"]!)
-                Text(flightData["time_muc"]!)
-                Text(flightData["area"]!)
-            }
-        }
+    func formatDate(_ timestamp: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter.string(from: timestamp)
     }
 
-    static func loadData() -> String {
-        // TODO: Change "loadData" to work with "any" timestamp -> Basically the idea is to take the current timestamp minus 2(?) hours and then display all flights from there until end of day or the same timestamp in the next day (Basically creating a 24 hour forecast). For this, "from", "min_date" and "max_date" in the url must be set dynamically
-        guard let url = URL(string: "https://www.munich-airport.de/flightsearch/arrivals?from=2023-07-25T20%3A20%3A100&per_page=1000&min_date=2023-07-25T20%3A00%3A00&max_date=2023-07-25T21%3A00%3A00") else {
+    func loadData(current: String, until: String) async -> String {
+        guard let url = URL(string: "https://www.munich-airport.de/flightsearch/arrivals?from=" + current + "&per_page=1000&min_date=" + current + "&max_date=" + until) else {
             return "Invalid URL"
         }
+
+        let _ = print(url)
 
         do {
             let contents = try String(contentsOf: url)
@@ -40,15 +34,15 @@ struct AirportData: View {
         return "Error"
     }
 
-    static func parseData() -> [[String: String]] {
-        let airportHTML = AirportData.loadData()
+    func parseData() async -> [[String: String]] {
+        let _ = print(formatDate(Date.now))
+        let airportHTML = Task { await self.loadData(current: formatDate(Date.now), until: formatDate(Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now)) }
         var flightData: [[String: String]] = []
 
         do {
             // Get Table Data
-            guard let elements: Elements = try? SwiftSoup.parse(airportHTML).getElementsByClass("fp-flights-table-large") else {
-                // TODO: CHANGE THIS RETURN WITH SOMETHING BETTER IF AVAILABLE
-                return [["": ""]]
+            guard let elements: Elements = try? await SwiftSoup.parse(airportHTML.value).getElementsByClass("fp-flights-table-large") else {
+                return [[:]]
             }
 
             // Get data of flights
@@ -57,22 +51,26 @@ struct AirportData: View {
             // parse data and create dictionaries which carry all information of each flight
             for flights in flightItems {
                 let airline = try flights.getElementsByClass("fp-flight-airline")[0].text()
+                let departureCity = try flights.getElementsByClass("fp-flight-airport")[0].text()
                 let number = try flights.getElementsByClass("fp-flight-number")[0].text()
                 let status = try flights.getElementsByClass("fp-flight-status")[0].text()
                 // Departure time
                 let time_other = try flights.getElementsByClass("fp-flight-time-other")[0].text()
-                
+
                 // Time flight is planned and expected at munich airport
-                let time_muc = try flights.getElementsByClass("fp-flight-time-muc")[0].text()
+                let times_muc = try flights.getElementsByClass("fp-flight-time-muc")[0].text().components(separatedBy: "|")
+
                 let area = try flights.getElementsByClass("fp-flight-area")[0].text()
 
                 // Append flight data array with data dictionaries
                 flightData.append([
                     "airline": airline,
+                    "departureCity": departureCity,
                     "number": number,
                     "status": status,
                     "time_other": time_other,
-                    "time_muc": time_muc,
+                    "plannedArrivalTime": times_muc[0].trimmingCharacters(in: .whitespaces),
+                    "expectedArrivalTime": times_muc[1].trimmingCharacters(in: .whitespaces),
                     "area": area
                 ])
             }
@@ -83,14 +81,6 @@ struct AirportData: View {
         } catch {
             print("error")
         }
-
-        // TODO: CHANGE THIS RETURN WITH SOMETHING BETTER IF AVAILABLE
-        return [["NO DATA": "NO DATA"]]
-    }
-}
-
-struct AirportData_Previews: PreviewProvider {
-    static var previews: some View {
-        AirportData()
+        return [[:]]
     }
 }

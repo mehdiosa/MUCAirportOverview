@@ -17,7 +17,8 @@
 		91DD1DD92A6FFAD3004D6219 /* AirportOverviewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD1DD82A6FFAD3004D6219 /* AirportOverviewUITests.swift */; };
 		91DD1DDB2A6FFAD3004D6219 /* AirportOverviewUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD1DDA2A6FFAD3004D6219 /* AirportOverviewUITestsLaunchTests.swift */; };
 		91DD1DE92A70192E004D6219 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 91DD1DE82A70192E004D6219 /* SwiftSoup */; };
-		91DD1DED2A701D86004D6219 /* AirportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD1DEC2A701D86004D6219 /* AirportData.swift */; };
+		91DD1DEF2A71131B004D6219 /* FlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD1DEE2A71131B004D6219 /* FlightView.swift */; };
+		91DD1DF12A7166AA004D6219 /* AirportData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD1DF02A7166AA004D6219 /* AirportData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +51,8 @@
 		91DD1DD42A6FFAD3004D6219 /* AirportOverviewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirportOverviewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91DD1DD82A6FFAD3004D6219 /* AirportOverviewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportOverviewUITests.swift; sourceTree = "<group>"; };
 		91DD1DDA2A6FFAD3004D6219 /* AirportOverviewUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportOverviewUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		91DD1DEC2A701D86004D6219 /* AirportData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportData.swift; sourceTree = "<group>"; };
+		91DD1DEE2A71131B004D6219 /* FlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightView.swift; sourceTree = "<group>"; };
+		91DD1DF02A7166AA004D6219 /* AirportData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirportData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +110,8 @@
 				91DD1DC12A6FFAD3004D6219 /* Persistence.swift */,
 				91DD1DC32A6FFAD3004D6219 /* AirportOverview.xcdatamodeld */,
 				91DD1DBE2A6FFAD3004D6219 /* Preview Content */,
-				91DD1DEC2A701D86004D6219 /* AirportData.swift */,
+				91DD1DEE2A71131B004D6219 /* FlightView.swift */,
+				91DD1DF02A7166AA004D6219 /* AirportData.swift */,
 			);
 			path = AirportOverview;
 			sourceTree = "<group>";
@@ -276,9 +279,10 @@
 			files = (
 				91DD1DC52A6FFAD3004D6219 /* AirportOverview.xcdatamodeld in Sources */,
 				91DD1DC22A6FFAD3004D6219 /* Persistence.swift in Sources */,
-				91DD1DED2A701D86004D6219 /* AirportData.swift in Sources */,
 				91DD1DBB2A6FFAD2004D6219 /* ContentView.swift in Sources */,
+				91DD1DEF2A71131B004D6219 /* FlightView.swift in Sources */,
 				91DD1DB92A6FFAD2004D6219 /* AirportOverviewApp.swift in Sources */,
+				91DD1DF12A7166AA004D6219 /* AirportData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
