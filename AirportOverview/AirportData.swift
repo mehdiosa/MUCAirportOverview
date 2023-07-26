@@ -22,8 +22,6 @@ class AirportData: ObservableObject {
             return "Invalid URL"
         }
 
-        let _ = print(url)
-
         do {
             let contents = try String(contentsOf: url)
             return contents
@@ -35,7 +33,6 @@ class AirportData: ObservableObject {
     }
 
     func parseData() async -> [[String: String]] {
-        let _ = print(formatDate(Date.now))
         let airportHTML = Task { await self.loadData(current: formatDate(Date.now), until: formatDate(Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now)) }
         var flightData: [[String: String]] = []
 
