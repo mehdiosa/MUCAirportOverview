@@ -11,29 +11,12 @@ import SwiftUI
 class AirportData: ObservableObject {
     @Published var isFetching: Bool = true
 
-    func formatDate(_ timestamp: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        return formatter.string(from: timestamp)
-    }
-
-    func loadData(current: String, until: String) async -> String {
-        guard let url = URL(string: "https://www.munich-airport.de/flightsearch/arrivals?from=" + current + "&per_page=1000&min_date=" + current + "&max_date=" + until) else {
-            return "Invalid URL"
-        }
-
-        do {
-            let contents = try String(contentsOf: url)
-            return contents
-        } catch {
-            // contents could not be loaded
-            print("Could not load contents")
-        }
-        return "Error"
-    }
-
-    func parseData() async -> [[String: String]] {
-        let airportHTML = Task { await self.loadData(current: formatDate(Date.now), until: formatDate(Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now)) }
+    func loadData() async -> [[String: String]] {
+        let airportHTML = Task { await self.getData(
+            // TODO: Add slider for how many hours back the user wants to go
+            current: formatDate(Calendar.current.date(byAdding: .hour, value: -2, to: Date.now) ?? Date.now),
+            // TODO: THIS NEEDS TO BE SET TO DAY INSTEAD OF HOUR
+            until: formatDate(Calendar.current.date(byAdding: .hour, value: 1, to: Date.now) ?? Date.now)) }
         var flightData: [[String: String]] = []
 
         do {
@@ -79,5 +62,28 @@ class AirportData: ObservableObject {
             print("error")
         }
         return [[:]]
+    }
+
+    func getData(current: String, until: String) async -> String {
+        guard let url = URL(string: "https://www.munich-airport.de/flightsearch/arrivals?from=" + current + "&per_page=1000&min_date=" + current + "&max_date=" + until) else {
+            return "Invalid URL"
+        }
+
+        let _ = print(url)
+
+        do {
+            let contents = try String(contentsOf: url)
+            return contents
+        } catch {
+            // contents could not be loaded
+            print("Could not load contents")
+        }
+        return "Error"
+    }
+
+    private func formatDate(_ timestamp: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter.string(from: timestamp)
     }
 }
