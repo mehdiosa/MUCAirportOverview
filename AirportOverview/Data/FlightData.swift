@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct FlightData {
+struct FlightData: Identifiable {
+    var id = UUID()
     var airline: String
     var departureCity: String
     var number: String

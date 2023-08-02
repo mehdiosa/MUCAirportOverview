@@ -21,11 +21,10 @@ struct TerminalsInfoView: View {
 
         if terminalData.isEmpty {
             Text("No data available for Terminal " + terminal.dropFirst())
-                .navigationTitle("Terminal " + terminal.dropFirst())
         }
         else {
             List {
-                ForEach(terminalData, id: \.number) { flight in
+                ForEach(terminalData) { flight in
                     FlightInfoView(airline: flight.airline,
                                    departureCity: flight.departureCity,
                                    flightNumber: flight.number,
@@ -34,7 +33,7 @@ struct TerminalsInfoView: View {
                                    expectedArrivalTime: flight.expectedArrivalTime,
                                    terminal: flight.area)
                 }
-            }.navigationTitle("Terminal " + terminal.dropFirst())
+            }
         }
     }
 

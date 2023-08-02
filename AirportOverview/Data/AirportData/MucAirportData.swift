@@ -12,9 +12,11 @@ struct MucAirportData {
     // TODO: Loading Arrivals and Departure Data can either be done by passing a type ("arrivals" or "departures") that is passed to the URL OR loading all data at once and then adding a key:value pair to the dictionary which can then be used to determine whether the flight is a arrriving or departing flight -> Best idea is the one where the data is only loaded when the tab is shown, however, this could cause delays as in everytime the tab is changed, data must first be loaded (which takes a few seconds depending on the internet connection) and only then can be shown -> Better if this can be run either in the background or be done directly when opening/reloading the app
     
     var data: AirportData
+    var isFetching: Bool
     
-    init(data: AirportData = AirportData()) {
+    init(data: AirportData = AirportData(), isFetching: Bool = true) {
         self.data = data
+        self.isFetching = isFetching
     }
     
     func loadData(_ type: String) async -> [FlightData] {
@@ -73,8 +75,6 @@ struct MucAirportData {
         guard let url = URL(string: "https://www.munich-airport.de/flightsearch/" + type + "?from=" + current + "&per_page=1000&min_date=" + current + "&max_date=" + until) else {
             return "Invalid URL"
         }
-    
-        let _ = print(url)
     
         do {
             let contents = try String(contentsOf: url)

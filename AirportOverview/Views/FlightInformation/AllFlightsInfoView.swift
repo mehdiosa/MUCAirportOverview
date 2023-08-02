@@ -15,7 +15,7 @@ struct AllFlightsInfoView: View {
             if airportData.count <= 0 {
                 FlightInfoView(airline: "", departureCity: "", flightNumber: "", status: "", plannedArrivalTime: "", expectedArrivalTime: "", terminal: "")
             } else {
-                ForEach(airportData, id: \.number) { flight in
+                ForEach(airportData) { flight in
                     FlightInfoView(airline: flight.airline,
                                    departureCity: flight.departureCity,
                                    flightNumber: flight.number,
@@ -25,7 +25,7 @@ struct AllFlightsInfoView: View {
                                    terminal: flight.area)
                 }
             }
-        }.navigationTitle("All flights")
+        }
     }
 }
 

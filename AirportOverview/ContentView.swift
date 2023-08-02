@@ -16,11 +16,7 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            if airportDataViewModel.isFetching {
-                ProgressView("Loading Airport Data").background(Color(UIColor.systemBackground))
-            } else {
-                MucAirportView(mucData: airportDataViewModel.mucAirportData)
-            }
+            MucAirportView(mucData: airportDataViewModel.mucAirportData)
         }.background(Color(.white))
     }
 }
