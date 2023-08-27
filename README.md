@@ -1,6 +1,6 @@
 # Munich Airport Overview
 
-Proof of Concept iPhone and iPad application to display Arrival and Departure information of the Munich Airport.
+iPhone and iPad application to display Arrival and Departure information of the Munich Airport.
 
 <img src="./Resources/demo.gif" width=220/>
 
