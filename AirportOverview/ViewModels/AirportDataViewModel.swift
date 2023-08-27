@@ -11,7 +11,6 @@ import SwiftUI
 extension ContentView {
     @MainActor class AirportDataViewModel: ObservableObject {
         var mucAirportData: MucAirportData = .init()
-
         var hamAirportData: MucAirportData = .init()
 
         @Published var isFetching: Bool = true

@@ -21,8 +21,8 @@ enum Terminals: String, CaseIterable, Identifiable {
 }
 
 enum FlightType: String {
-    case Arrivals
-    case Departures
+    case Ankünfte
+    case Abflüge
 }
 
 struct AirportData {

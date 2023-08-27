@@ -17,7 +17,6 @@ struct FlightInfoView: View {
     var terminal: String
 
     var body: some View {
-        // TODO: Think of something (maybe something else than a small message) to show the user that there was an error when loading the data.
         VStack {
             HStack {
                 Text(self.departureCity.count > 0 ? self.departureCity : "").frame(maxWidth: .infinity, alignment: .leading).bold()
@@ -30,33 +29,49 @@ struct FlightInfoView: View {
 
                 Text(self.expectedArrivalTime.count > 0 ? "**Erwartet:**\n\(self.expectedArrivalTime)" : "").frame(maxWidth: .infinity, alignment: .center)
 
-                Text(self.status.count > 0 ? "**Status:**\n\(Text(self.status).foregroundColor(setStatusColor(status: self.status)))" : "").frame(maxWidth: .infinity, alignment: .trailing)
+                Text(self.status.count > 0 ? "**Status:\n\(Text(self.status).foregroundColor(setStatusColor(status: self.status)))**" : "").frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
     }
 
-    // TODO: CHANGE COLORS ACCORDING TO COLOR THEORY MAYBE
+    // TODO: Change colors for more consistent output
     private func setStatusColor(status: String) -> Color {
         switch status {
-        case "gestartet": return Color(red: 53/255, green: 113/255, blue: 170/255) // Blue
-        case "verspätet": return Color(red: 219/255, green: 68/255, blue: 57/255) // Orange or Red
-        case "im Anflug": return Color(red: 104/255, green: 152/255, blue: 202/255) // Light blue
-        case "gelandet": return Color.blue // darker blue?
-        case "Gepäck": return Color(red: 98/255, green: 159/255, blue: 173/255) // yellow
-        case "beendet": return Color.green
-        case "annuliert": return Color.red
-        case "boarding": return Color.orange
-        case "Check-In": return Color.green
-        case "geplant": return Color.blue
-        default:
-            return Color(UIColor.systemBackground)
+            // Successes
+            case "gelandet": return Color(red: 89/255, green: 153/255, blue: 49/255)
+            case "Gepäck": return Color(red: 0/255, green: 135/255, blue: 75/255)
+            case "beendet": return Color(red: 0/255, green: 102/255, blue: 68/255)
+
+            // neutral
+            case "geplant": return Color.black
+            case "gestartet": return Color(red: 0/255, green: 82/255, blue: 204/255)
+            case "im Anflug": return Color(red: 7/255, green: 71/255, blue: 166/255)
+
+            // warnings
+            case "boarding": return Color(red: 255/255, green: 153/255, blue: 31/255)
+            case "Check-In": return Color(red: 0/255, green: 135/255, blue: 90/255)
+
+            // Errors and failures
+            case "verspätet": return Color(red: 222/255, green: 53/255, blue: 11/255)
+            case "annulliert": return Color(red: 191/255, green: 38/255, blue: 0/255)
+            default:
+                return Color(UIColor.systemBackground)
         }
     }
 }
 
 struct FlightView_Previews: PreviewProvider {
     static var previews: some View {
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "gelandet", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "Gepäck", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
         FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "beendet", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "geplant", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "gestartet", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "im Anflug", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "boarding", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "Check-In", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "verspätet", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
+        FlightInfoView(airline: "Lufthansa", departureCity: "Berlin", flightNumber: "EN 8309 (E320)", status: "annulliert", plannedArrivalTime: "15:00", expectedArrivalTime: "15:40", terminal: "T2")
 
 //        FlightInfoView(airline: "", departureCity: "", flightNumber: "", status: "", plannedArrivalTime: "", expectedArrivalTime: "", terminal: "")
     }

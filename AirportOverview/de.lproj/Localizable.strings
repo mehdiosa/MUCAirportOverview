@@ -1,0 +1,25 @@
+/* 
+  Localizable.strings
+  AirportOverview
+
+  Created by Osama Mehdi on 25.08.23.
+  
+*/
+
+
+"Scheduled" = "Geplant";
+"Estimated" = "Erwartet";
+"Status" = "Status";
+"Arrivals" = "Ankünfte";
+"Departures" = "Abflüge";
+"started" = "gestartet";
+"delayed" = "verspätet";
+"approaching" = "im Anflug";
+"landed" = "gelandet";
+"baggage" = "Gepäck";
+"finished" = "beendet";
+"canceled" = "annuliert";
+"boarding" = "boarding";
+"Check-In" = "Check-In";
+"planned" = "geplant";
+

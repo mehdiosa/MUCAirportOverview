@@ -9,8 +9,6 @@ import Foundation
 import SwiftSoup
 
 struct MucAirportData {
-    // TODO: Loading Arrivals and Departure Data can either be done by passing a type ("arrivals" or "departures") that is passed to the URL OR loading all data at once and then adding a key:value pair to the dictionary which can then be used to determine whether the flight is a arrriving or departing flight -> Best idea is the one where the data is only loaded when the tab is shown, however, this could cause delays as in everytime the tab is changed, data must first be loaded (which takes a few seconds depending on the internet connection) and only then can be shown -> Better if this can be run either in the background or be done directly when opening/reloading the app
-    
     var data: AirportData
     var isFetching: Bool
     
@@ -23,7 +21,7 @@ struct MucAirportData {
         let airportHTML = Task { await self.getData(type: type,
                                                     // TODO: Add slider for how many hours back the user wants to go
                                                     current: formatDate(Calendar.current.date(byAdding: .hour, value: -2, to: Date.now) ?? Date.now),
-                                                    // TODO: THIS NEEDS TO BE SET TO DAY INSTEAD OF HOUR
+                                                    
                                                     until: formatDate(Calendar.current.date(byAdding: .day, value: 1, to: Date.now) ?? Date.now)) }
         var flightData: [FlightData] = []
     
@@ -50,7 +48,7 @@ struct MucAirportData {
             
                 let area = try flights.getElementsByClass("fp-flight-area")[0].text()
             
-                // Append flight data array with data type
+                // Append flight data array with data
                 flightData.append(FlightData(airline: airline,
                                              departureCity: departureCity,
                                              number: number, status: status,
@@ -80,10 +78,9 @@ struct MucAirportData {
             let contents = try String(contentsOf: url)
             return contents
         } catch {
-            // contents could not be loaded
             print("Could not load contents")
         }
-        return "Error"
+        return "An Error occured."
     }
     
     private func formatDate(_ timestamp: Date) -> String {

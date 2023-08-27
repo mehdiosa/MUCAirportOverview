@@ -12,8 +12,6 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var airportDataViewModel: AirportDataViewModel = .init()
 
-    // TODO: When adding departures either create a view for each tabitem, where the data is passed (as in arrival and departure data) and use this instead of re-using code -> DRY Principle
-
     var body: some View {
         VStack {
             MucAirportView(mucData: airportDataViewModel.mucAirportData)
@@ -26,3 +24,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
+

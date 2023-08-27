@@ -11,52 +11,53 @@ struct MucAirportView: View {
     @State var mucData: MucAirportData
 
     @State var activeTab: Terminals = .allFlights
-    @State var activePage: FlightType = .Arrivals
+    @State var activePage: FlightType = .Ankünfte
 
     var body: some View {
         VStack {
             if mucData.isFetching {
-                ProgressView("Loading Airport Data").background(Color(UIColor.systemBackground))
+                ProgressView("Lade Fluginformationen...").background(Color(UIColor.systemBackground))
             } else {
-                NavigationView {
-                    TabView(selection: $activePage) {
-                        NavigationStack {
-                            TabView(selection: $activeTab) {
-                                AllFlightsInfoView(airportData: mucData.data.arrivalData).tabItem {}.tag(Terminals.allFlights)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1A").tabItem {}.tag(Terminals.terminal1A)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1B").tabItem {}.tag(Terminals.terminal1B)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1C").tabItem {}.tag(Terminals.terminal1C)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1D").tabItem {}.tag(Terminals.terminal1D)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1E").tabItem {}.tag(Terminals.terminal1E)
-                                TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1F").tabItem {}.tag(Terminals.terminal1F)
-                            }
-                            .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
-                            .listStyle(.plain)
-                            .toolbar {
-                                createQuickNavButtons(mucData.data.availableArrivalTerminals)
-                            }
-                        }.tabItem { Label("Arrivals", systemImage: "airplane.arrival") }.tag(FlightType.Arrivals)
+                TabView(selection: $activePage) {
+                    NavigationStack {
+                        TabView(selection: $activeTab) {
+                            AllFlightsInfoView(airportData: mucData.data.arrivalData).tabItem {}.tag(Terminals.allFlights)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1A").tabItem {}.tag(Terminals.terminal1A)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1B").tabItem {}.tag(Terminals.terminal1B)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1C").tabItem {}.tag(Terminals.terminal1C)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1D").tabItem {}.tag(Terminals.terminal1D)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1E").tabItem {}.tag(Terminals.terminal1E)
+                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1F").tabItem {}.tag(Terminals.terminal1F)
+                        }
+                        .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
+                        .listStyle(.plain)
+                        .toolbar {
+                            createQuickNavButtons(mucData.data.availableArrivalTerminals)
+                            reloadToolbarItem()
+                        }.toolbarBackground(.hidden, for: .tabBar)
+                        .navigationTitle(Text(activePage.rawValue))
+                        .navigationBarTitleDisplayMode(.inline)
+                    }.tabItem { Label("Ankünfte", systemImage: "airplane.arrival") }.tag(FlightType.Ankünfte)
 
-                        NavigationStack {
-                            TabView(selection: $activeTab) {
-                                AllFlightsInfoView(airportData: mucData.data.departureData).tabItem {}.tag(Terminals.allFlights)
-                                TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T1").tabItem {}.tag(Terminals.terminal1)
-                                TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
-                            }
-                            .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
-                            .listStyle(.plain)
-                            .toolbar {
-                                createQuickNavButtons(mucData.data.availableDepartureTerminals)
-                            }
-                        }.tabItem { Label("Departures", systemImage: "airplane.departure") }.tag(FlightType.Departures)
-                    }
-                    .navigationTitle(Text(activePage.rawValue))
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        reloadToolbarItem()
-                    }.toolbarBackground(.hidden, for: .automatic)
+                    NavigationStack {
+                        TabView(selection: $activeTab) {
+                            AllFlightsInfoView(airportData: mucData.data.departureData).tabItem {}.tag(Terminals.allFlights)
+                            TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T1").tabItem {}.tag(Terminals.terminal1)
+                            TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
+                        }
+                        .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
+                        .listStyle(.plain)
+                        .toolbar {
+                            createQuickNavButtons(mucData.data.availableDepartureTerminals)
+                            reloadToolbarItem()
+                        }
+                        .toolbarBackground(.hidden, for: .tabBar)
+                        .navigationTitle(Text(activePage.rawValue))
+                        .navigationBarTitleDisplayMode(.inline)
+                    }.tabItem { Label("Abflüge", systemImage: "airplane.departure") }.tag(FlightType.Abflüge)
                 }
+                .toolbar {}.toolbarBackground(.hidden, for: .tabBar)
             }
         }.task { await reloadData() }
     }

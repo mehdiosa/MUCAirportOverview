@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TerminalsInfoView: View {
     var airportData: [FlightData] = []
+    // TODO: CHANGE THIS TO TERMINALS AND MERGE ALLFLIGHTSINFO WITH THIS VIEW TO CREATE ONE VIEW INSTEAD OF MULTIPLE VIEWS -> DRY PRINCIPLE
     var terminal: String = ""
 
     var body: some View {
@@ -20,7 +21,7 @@ struct TerminalsInfoView: View {
         let terminalData = getTerminalData(terminal)
 
         if terminalData.isEmpty {
-            Text("No data available for Terminal " + terminal.dropFirst())
+            Text("Keine Fluginformationen für Terminal " + terminal.dropFirst() + " verfügbar.")
         }
         else {
             List {
