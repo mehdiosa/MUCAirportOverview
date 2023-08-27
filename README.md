@@ -11,7 +11,7 @@ It was designed for Taxi Drivers who need to know about the incoming flights bef
 Additionally the app can be used for anyone looking for an incoming or departing flight, for example, when picking someone up from the airport or to check your own flight, respectively.
 
 ## Demo
-A live app demo is available under [this link](https://appetize.io/app/tlyu7k4czrhkg2gcurz3dqkeu4?device=iphone14pro&osVersion=16.2&scale=75). The demo is available on [appetize.io](https://appetize.io), allowing the app to run in any modern browser and on multiple (virtual) devices.
+A live app demo is available under [this link](https://appetize.io/embed/tlyu7k4czrhkg2gcurz3dqkeu4). The demo is available on [appetize.io](https://appetize.io), allowing the app to run in any modern browser and on multiple (virtual) devices.
 
 ## Note:
 This application was intended as a proof of concept. The data is acquired directly from the website of the Munich airport, which is not optimal.
