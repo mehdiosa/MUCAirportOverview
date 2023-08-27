@@ -21,14 +21,14 @@ struct MucAirportView: View {
                 TabView(selection: $activePage) {
                     NavigationStack {
                         TabView(selection: $activeTab) {
-                            AllFlightsInfoView(airportData: mucData.data.arrivalData).tabItem {}.tag(Terminals.allFlights)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1A").tabItem {}.tag(Terminals.terminal1A)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1B").tabItem {}.tag(Terminals.terminal1B)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1C").tabItem {}.tag(Terminals.terminal1C)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1D").tabItem {}.tag(Terminals.terminal1D)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1E").tabItem {}.tag(Terminals.terminal1E)
-                            TerminalsInfoView(airportData: mucData.data.arrivalData, terminal: "T1F").tabItem {}.tag(Terminals.terminal1F)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.allFlights).tabItem {}.tag(Terminals.allFlights)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal2).tabItem {}.tag(Terminals.terminal2)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1A).tabItem {}.tag(Terminals.terminal1A)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1B).tabItem {}.tag(Terminals.terminal1B)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1C).tabItem {}.tag(Terminals.terminal1C)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1D).tabItem {}.tag(Terminals.terminal1D)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1E).tabItem {}.tag(Terminals.terminal1E)
+                            FlightListView(airportData: mucData.data.arrivalData, terminal: Terminals.terminal1F).tabItem {}.tag(Terminals.terminal1F)
                         }
                         .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
                         .listStyle(.plain)
@@ -38,13 +38,13 @@ struct MucAirportView: View {
                         }.toolbarBackground(.hidden, for: .tabBar)
                         .navigationTitle(Text(activePage.rawValue))
                         .navigationBarTitleDisplayMode(.inline)
-                    }.tabItem { Label("Ankünfte", systemImage: "airplane.arrival") }.tag(FlightType.Ankünfte)
+                    }.tabItem { Label(FlightType.Ankünfte.rawValue, systemImage: "airplane.arrival") }.tag(FlightType.Ankünfte)
 
                     NavigationStack {
                         TabView(selection: $activeTab) {
-                            AllFlightsInfoView(airportData: mucData.data.departureData).tabItem {}.tag(Terminals.allFlights)
-                            TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T1").tabItem {}.tag(Terminals.terminal1)
-                            TerminalsInfoView(airportData: mucData.data.departureData, terminal: "T2").tabItem {}.tag(Terminals.terminal2)
+                            FlightListView(airportData: mucData.data.departureData, terminal: Terminals.allFlights).tabItem {}.tag(Terminals.allFlights)
+                            FlightListView(airportData: mucData.data.departureData, terminal: Terminals.terminal1).tabItem {}.tag(Terminals.terminal1)
+                            FlightListView(airportData: mucData.data.departureData, terminal: Terminals.terminal2).tabItem {}.tag(Terminals.terminal2)
                         }
                         .tabViewStyle(.page).indexViewStyle(.page(backgroundDisplayMode: .never))
                         .listStyle(.plain)
@@ -55,7 +55,7 @@ struct MucAirportView: View {
                         .toolbarBackground(.hidden, for: .tabBar)
                         .navigationTitle(Text(activePage.rawValue))
                         .navigationBarTitleDisplayMode(.inline)
-                    }.tabItem { Label("Abflüge", systemImage: "airplane.departure") }.tag(FlightType.Abflüge)
+                    }.tabItem { Label(FlightType.Abflüge.rawValue, systemImage: "airplane.departure") }.tag(FlightType.Abflüge)
                 }
                 .toolbar {}.toolbarBackground(.hidden, for: .tabBar)
             }
@@ -75,7 +75,6 @@ struct MucAirportView: View {
         }
     }
 
-    // This could be used as an extension in the future
     @ToolbarContentBuilder
     func createQuickNavButtons(_ availableTerminals: [Terminals]) -> some ToolbarContent {
         ToolbarItemGroup(placement: .status) {
@@ -84,25 +83,14 @@ struct MucAirportView: View {
                     Button(action: { activeTab = terminal }) {
                         Label(terminal.rawValue,
                               systemImage:
-                              terminal.rawValue == "All flights" ? activeTab == terminal ? "airplane.circle.fill" : "airplane.circle" :
-                                  terminal.rawValue == "T1" ? activeTab == terminal ? "1.circle.fill" : "1.circle" :
-                                  terminal.rawValue == "T2" ? activeTab == terminal ? "2.circle.fill" : "2.circle" :
+                              terminal.rawValue == Terminals.allFlights.rawValue ? activeTab == terminal ? "airplane.circle.fill" : "airplane.circle" :
+                                  terminal.rawValue == Terminals.terminal1.rawValue ? activeTab == terminal ? "1.circle.fill" : "1.circle" :
+                                  terminal.rawValue == Terminals.terminal2.rawValue ? activeTab == terminal ? "2.circle.fill" : "2.circle" :
                                   activeTab == terminal ? terminal.rawValue.dropFirst(2).lowercased() + ".circle.fill" : terminal.rawValue.dropFirst(2).lowercased() + ".circle")
                     }
                 }
             }
         }
-    }
-
-    // This could be used as an extension in the future
-    private func getAllTerminals(_ data: [FlightData]) -> [String] {
-        var terminals = [String]()
-        for flight in data {
-            if !terminals.contains(flight.area) {
-                terminals.append(flight.area)
-            }
-        }
-        return terminals
     }
 
     private func reloadData() async {
