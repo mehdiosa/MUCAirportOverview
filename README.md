@@ -2,6 +2,8 @@
 
 Proof of Concept iPhone and iPad application to display Arrival and Departure information of the Munich Airport.
 
+<img src="./Resources/demo.gif" />
+
 
 ## Description
 The Munich Airport Overview app is a simple project displaying flight information of the Munich Airport, sorted by arriving and departing flights, as well as by terminal.
