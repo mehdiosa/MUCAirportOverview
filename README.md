@@ -2,7 +2,7 @@
 
 Proof of Concept iPhone and iPad application to display Arrival and Departure information of the Munich Airport.
 
-<img src="./Resources/demo.gif" />
+<img src="./Resources/demo.gif" width=50%/>
 
 
 ## Description
